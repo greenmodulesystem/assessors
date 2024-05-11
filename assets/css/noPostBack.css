@@ -1,0 +1,23 @@
+#alert
+{
+    background-color    :  #FF8000;
+    border              :   1px;
+    height              :   75px;
+    border-style        :   double;
+    border-width        :   4px;
+    border-color        :   #FFFFFF;
+    display             :   none;
+}
+#alert-image
+{
+    margin              :   29px 0px 0px 10px;  
+    float               :   left;
+}
+#alert-message
+{
+    font-family         :   verdana;
+    font-size           :   12px;
+    color               :   #FFFFFF;
+    margin              :   29px 0px 0px 10px;   
+    float               :   left;
+}

@@ -1,0 +1,51 @@
+.permit-info {
+    border-width: 1px;
+    border-color: black;
+    border-style: none none ridge none;
+    text-transform: uppercase;
+}
+
+.doc {
+    font-size: 12.5px;
+    font-family: 'Tahoma';
+}
+
+p span {
+    width: 1.9cm;
+    display: block;
+    float: left;
+    clear: left;
+}
+
+p.right span {
+    width: 4.2cm;
+    display: block;
+    float: right;
+    text-align: left;
+}
+
+#tbody {
+    font-size: 11.5px;
+}
+
+#tfoot {
+    font-size: 13px;
+}
+
+.thisfoot {
+    font-size: 10.5px;
+    line-height: 0.4em;
+}
+
+@page {
+    size: 8.5in 13.0in;
+    margin: -0.2in 0.5in 1.0in 0.5in;
+    background-color: white;
+}
+
+@media print {
+    .doc {
+        width: 8.5in;
+        height: 12.0in;
+    }
+}
