@@ -46,11 +46,11 @@
 #right { float:right; }
 </style>
 <div id="doc" style="line-height: .4em; width: 15.5cm; height: 12.5cm; display:inline-block; left:in;">
-   <img style="width:70px; height: 70px; position:absolute; top: 10px; left: 5%;"src="<?php echo base_url()?>assets/img/logo/cadiz-official-logo-o.png">
+   <img style="width:70px; height: 70px; position:absolute; top: 10px; left: 5%;"src="<?php echo base_url()?>assets/img/logo/SAGAY-official-logo-o.png">
    <img style="width:60px; height: 70px; position:absolute; top: 10px; right: 5%;"src="<?php echo base_url()?>assets/img/logo/sentrong-sigla-o.png">
    <div style="text-align: center;">
         <p style="font-size: 12px; font-family: Calibri (Body); ">Republic of the Philippines</p>
-        <p style="font-size: 12px; font-family: Calibri (Body); ">City of Cadiz</p>
+        <p style="font-size: 12px; font-family: Calibri (Body); ">City of SAGAY</p>
         <div style="line-height: .8em;">
             <p style="font-size: 12px; font-family: Arial Black;"><b>OFFICE OF THE CITY HEALTH OFFICER</b></p>
             <p style="font-family:'Old English Text MT'; font-size: 30px; transform: scale(1.1, 1);">Sanitary Permit to Operate</p>

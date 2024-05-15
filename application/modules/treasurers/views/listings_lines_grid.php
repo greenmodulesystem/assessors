@@ -5,7 +5,7 @@
         <tr>
             <td><?=strtoupper($line->Permit_no)?><br>&emsp;<?=strtoupper($line->Status)?></td>
             <td><?=strtoupper($line->Trade_name_franchise)?><br>&emsp;
-                <?=strtoupper($line->Street.", ".$line->Barangay.", Cadiz City")?>
+                <?=strtoupper($line->Street.", ".$line->Barangay.", SAGAY City")?>
             </td>
             <td><?=strtoupper($line->Tax_payer)?><br>&emsp;<?=strtoupper($line->Owner_address)?></td>
             <td><?=strtoupper($line->Barangay)?></td>

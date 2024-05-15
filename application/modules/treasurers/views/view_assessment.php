@@ -4,7 +4,7 @@
     $Strt = ($profiles->Street != '') ? trim($profiles->Street).", " : '';
     $Prk = ($profiles->Purok != '') ? trim($profiles->Purok).", " : '';
     $Address1 = $Bldg.$Strt.$Prk;
-    $Address2 = trim($profiles->Barangay).", Cadiz City";
+    $Address2 = trim($profiles->Barangay).", SAGAY City";
     $Proprietor = $profiles->Tax_payer;
     $Status = ($profiles->Status == 'RENEWAL') ? 'RENEW' : $profiles->Status;
     $Type = $Status." (".$profiles->Cycle_date.")";
@@ -31,7 +31,7 @@
     <img id="Ass_logo" style="width:85px; height:85px; position:absolute; left:19.5%; top:0.2cm"src="<?php echo base_url()?>assets/img/Logo_2.png">
     <div style="text-align: center;">
         <p>REPUBLIC OF THE PHILIPPINES</p>
-        <p>CITY OF CADIZ</p>
+        <p>CITY OF SAGAY</p>
         <div style="line-height:1.7em;">&emsp;</div>
         <p><b>OFFICE OF THE CITY TREASURER</b></p>
         <div style="line-height:0.8em;">&emsp;</div>

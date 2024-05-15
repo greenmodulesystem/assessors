@@ -6,7 +6,7 @@ $Bldg = ($profiles->Building_name != '') ? trim($profiles->Building_name).", " :
 $Strt = ($profiles->Street != '') ? trim($profiles->Street).", " : '';
 $Prk = ($profiles->Purok != '') ? trim($profiles->Purok).", " : '';
 $Address1 = ucwords($Bldg).ucwords($Strt).ucwords($Prk);
-$Address2 = ucwords(trim($profiles->Barangay)).", Cadiz City";
+$Address2 = ucwords(trim($profiles->Barangay)).", SAGAY City";
 $Payor = ucwords($profiles->Tax_payer);
 $Number = $profiles->Mob_num != '' ? $profiles->Mob_num : $profiles->Tel_num;
 ?>

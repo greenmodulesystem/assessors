@@ -598,24 +598,24 @@
                                     <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
-                                <li class="<?php echo ($submenu == 'masterlist') && ($module == 'listings') ? 'active' : ''; ?>">
+                                <!-- <li class="<?php echo ($submenu == 'masterlist') && ($module == 'listings') ? 'active' : ''; ?>">
                                     <a href="#">
                                         <i class="fa fa-circle-o"></i>
                                         <span>Masterlist of Business</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="<?php echo ($submenu == 'lines') && ($module == 'listings') ? 'active' : ''; ?>">
                                     <a href="<?php echo base_url() ?>treasurers/line_of_business">
                                         <i class="fa fa-circle-o"></i>
                                         <span>Line of Business</span>
                                     </a>
                                 </li>
-                                <li class="<?php echo ($submenu == 'delinquency') && ($module == 'listings') ? 'active' : ''; ?>">
+                                <!-- <li class="<?php echo ($submenu == 'delinquency') && ($module == 'listings') ? 'active' : ''; ?>">
                                     <a href="#">
                                         <i class="fa fa-circle-o"></i>
                                         <span>Business Delinquency</span>
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="<?php echo ($submenu == 'types') && ($module == 'listings') ? 'active' : ''; ?>">
                                     <a href="<?php echo base_url() ?>treasurers/types_of_business">
                                         <i class="fa fa-circle-o"></i>

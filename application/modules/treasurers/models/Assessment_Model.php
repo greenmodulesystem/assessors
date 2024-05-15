@@ -252,11 +252,11 @@ class Assessment_Model extends CI_Model
             if ($details->Trucking != 0) {
                 $dt = $details->Trucking;
                 $truck_fee = 0;
-                if ($details->Trucking <= 2 ) {
+                if ($details->Trucking <= 2) {
                     $truck_fee = 500;
                 } else {
                     // $truck_fee = ($dt % 2 == 0 ? ( $dt / 2 ) * 100  : ( (int) ($dt / 2) + 1 ) * 100 ) + 500;
-                    $truck_fee = (($dt - 2) * 100 ) + 500;
+                    $truck_fee = (($dt - 2) * 100) + 500;
                     // $truck_fee += 500;
                 }
                 $others['Trucking Permit Fee'] = $truck_fee;
@@ -297,8 +297,10 @@ class Assessment_Model extends CI_Model
                 $regulatory['Business License'] = $initial->percent1 * $initial->percent2 * $profile->Capitalization;
             } else { //if application is renewal. tax is added
                 $tax = []; //initializes tax array
+                
                 $others['Sticker'] = 20;
                 foreach ($lines as $key => $line) { //loops all business line
+                    echo $line->Business_category;
                     if ($line->Essential != null || $line->NonEssential != null) { //checker if gross is declared or set
                         $Gross = ($line->Essential == null) ? $line->NonEssential : $line->Essential; //sets the gross variable
                         // $amt = tax
@@ -345,6 +347,7 @@ class Assessment_Model extends CI_Model
                                 trim(strtoupper($line->Business_category)) == 'CONTRACTORS' ||
                                 trim(strtoupper($line->Business_category)) == 'SERVICES' ||
                                 trim(strtoupper($line->Business_category)) == 'SERVICES ESTABLISHMENTS' ||
+                                trim(strtoupper($line->Business_category)) == 'SERVICE ESTABLISHMENT' ||
                                 trim(strtoupper($line->Business_category)) == 'BUSINESS ESTABLISHMENTS' ||
                                 trim(strtoupper($line->Business_category)) == 'AGENCIES'
                             ) {
@@ -1103,6 +1106,7 @@ class Assessment_Model extends CI_Model
         $Essential = $array['Essential'];
         $NonEssential = $array['NonEssential'];
         $Assessment_asset_ID = $array['Assessment_asset_ID'];
+        $mp_ID = $array['mp_ID'];
         $Exempted = $array['Exempted'];
         $data = [];
         foreach ($IDs as $key => $ID) {
@@ -1114,6 +1118,7 @@ class Assessment_Model extends CI_Model
                     "Essential" => ($Essential[$key] == '') ? null : $Essential[$key],
                     "NonEssential" => ($NonEssential[$key] == '') ? null : $NonEssential[$key],
                     "Assessment_asset_ID" => $Assessment_asset_ID[$key],
+                    "mp_ID" => $mp_ID[$key],
                     "Exempted" => $Exempted[$key],
                 )
             );

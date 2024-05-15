@@ -84,6 +84,7 @@ $db['default'] = array(
 	'password' => '',
 	// 'database' => 'cadiz_licensing_testing_4',
 	'database' => 'sagay_licensing_testing',
+		// 'database' => "sagay_licensing_v2",
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

@@ -4,7 +4,7 @@
     $Strt = ($profiles->Street != '') ? trim($profiles->Street).", " : '';
     $Prk = ($profiles->Purok != '') ? trim($profiles->Purok).", " : '';
     $Address1 = $Bldg.$Strt.$Prk;
-    $Address2 = trim($profiles->Barangay).", Cadiz City";
+    $Address2 = trim($profiles->Barangay).", SAGAY City";
     $Proprietor = $profiles->Tax_payer;
     $Status = ($profiles->Status == 'RENEWAL') ? 'RENEW' : $profiles->Status;
     $total = 0;$bal_total = 0; $dis_total = 0; $sur_total = 0; $int_total = 0;
@@ -17,7 +17,7 @@
     <img style="width:100px; height:100px; position:absolute; left:11%; top:0cm"src="<?php echo base_url()?>assets/img/Logo_2.png">
     <div style="text-align: center;">
         <p>REPUBLIC OF THE PHILIPPINES</p>
-        <p>CITY OF CADIZ</p>
+        <p>CITY OF SAGAY</p>
         <div style="line-height:2.2em;">&emsp;</div>
         <p style="font-size:16.5px;font-weight:bolder;"><b>OFFICE OF THE CITY TREASURER</b></p>
         <div style="line-height:1em;">&emsp;</div>

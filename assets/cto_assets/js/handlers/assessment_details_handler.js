@@ -5,6 +5,7 @@ $(document).ready(function() {
         var Essential = [];
         var NonEssential = [];
         var Assessment_asset_ID = [];
+        var mp_ID = [];
         var Exempted = [];
 
         Object.keys(blines).forEach(function(key) {
@@ -17,7 +18,7 @@ $(document).ready(function() {
             Essential.push(ess_val);
             NonEssential.push(non_val);
             Assessment_asset_ID.push($('#size' + key).val());
-            // mp_ID.push($('#mp' + key).val()); //added 5824 alob
+            mp_ID.push($('#mp' + key).val()); //added 5824 alob
             var exempt = $('#xmp' + key).is(':checked') ? 1 : 0;
             Exempted.push(exempt);
         });
@@ -42,12 +43,12 @@ $(document).ready(function() {
                     Essential: Essential,
                     NonEssential: NonEssential,
                     Assessment_asset_ID: Assessment_asset_ID,
-                    // mp_ID: mp_ID, //added 5824 alob
+                    mp_ID: mp_ID, //added 5824 alob
                     Payment_mode: Payment_mode,
                     Exempted: Exempted
                 },
             }).done(function(result) {
-                document.location.reload(true);
+                // document.location.reload(true);
             });
         }
     });

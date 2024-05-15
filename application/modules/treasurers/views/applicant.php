@@ -9,7 +9,7 @@ $Bldg = ($profiles->Building_name != '') ? trim($profiles->Building_name) . ", "
 $Strt = ($profiles->Street != '') ? trim($profiles->Street) . ", " : '';
 $Prk = ($profiles->Purok != '') ? trim($profiles->Purok) . ", " : '';
 $Address1 = ucwords($Bldg) . ucwords($Strt) . ucwords($Prk);
-$Address2 = ucwords(trim($profiles->Barangay)) . ", Cadiz City";
+$Address2 = ucwords(trim($profiles->Barangay)) . ", SAGAY City";
 $Payor = ucwords($profiles->Tax_payer);
 $Number = $profiles->Mob_num != '' ? $profiles->Mob_num : $profiles->Tel_num;
 $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->Tradename;
@@ -230,7 +230,7 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                         } ?>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-2">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Mayor's Permit Fee:</label>
                                         <?php foreach ($blines as $key => $bline) { ?>
@@ -241,16 +241,16 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                         if (@$asset->Description == $bline->Business_line) {
                                                     ?>
                                                             <option value="<?= @$asset->ID ?>">
-                                                                <!-- <?= @$asset->Characteristics . "(" . @$asset->Asset_size . ")" ?> -->
+                                                                <?= @$asset->Characteristics . "(" . @$asset->Rate . ")" ?>
                                                                 <?= @$asset->Description ?>
-                                                          <!--   </option>
+                                                            </option>
                                                     <?php
                                                         }
                                                     } ?>
                                                 <?php } else { ?>
                                                     <select id="mp_fee<?= $key ?>" class="input-field form-control input-sm" disabled>
                                                         <option selected hidden value="<?= @$bline->mp_ID ?>">
-                                                            <?= @$bline->Characteristics ?>
+                                                        <?= @$bline->Business_line ?>
                                                         </option>
                                                         <option disabled value="">Select business type</option>
                                                     <?php } ?>
@@ -258,8 +258,8 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                         if (@$asset->Description == $bline->Business_line) {
                                                     ?>
                                                             <option value="<?= @$asset->ID ?>">
-                                                                <!-- <?= @$asset->Characteristics . "(" . @$asset->Asset_size . ")" ?> -->
-                                                            <!--     <?= @$asset->Description ?>
+                                                                <?= @$asset->Characteristics . "(" . @$asset->Rate . ")" ?>
+                                                                <?= @$asset->Description ?>
                                                             </option>
                                                     <?php
                                                         }
@@ -267,7 +267,7 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                     </select></br>
                                                 <?php } ?>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
