@@ -208,10 +208,19 @@ class Profiles_Model extends CI_Model
     public function update_cenro($Solid_waste_ID, $ID, $Date)
     {
         $cycle = $this->getcycleID($ID);
-        $this->db->set('Solid_waste_ID', (int)$Solid_waste_ID);
-        $this->db->set('Date_billed', $Date);
-        $this->db->where('Cycle_ID', $cycle->ID);
-        $this->db->update('tbl_cenro_line');
+        $cenro = $this->db->get_where('tbl_cenro_line', array('Cycle_ID' => $cycle->ID));
+        if ($cenro->num_rows() < 1) {
+            $data['Cycle_ID'] = $cycle->ID;
+            $data['Solid_waste_ID'] = $Solid_waste_ID;
+            $data['Date_billed'] = $Date;
+            $table = "tbl_cenro_line";
+            $this->db->insert($table, $data);
+        } else {
+            $this->db->set('Solid_waste_ID', (int)$Solid_waste_ID);
+            $this->db->set('Date_billed', $Date);
+            $this->db->where('Cycle_ID', $cycle->ID);
+            $this->db->update('tbl_cenro_line');
+        }
     }
     // ----------------------------------- TEMP FUNCTION ---------------------------------- //
 

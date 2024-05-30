@@ -84,13 +84,13 @@ class Assessment_Model extends CI_Model
             'd.*,' .
                 's.Category,' .
                 's.Sanitary_fee,' .
-                'w.Size,' .
+                // 'w.Size,' .
                 'w.Waste_fee'
         );
         $this->db->from('tbl_assessment_details d');
         $this->db->join('tbl_fees_sanitary s', 's.ID = d.Category_ID', 'left');
         $this->db->join('tbl_cenro_line c', 'c.Cycle_ID = ' . $cycle->ID, 'left');
-        $this->db->join('tbl_fees_solid_waste w', 'w.ID = c.Solid_waste_ID', 'left');
+        $this->db->join('tbl_fees_garbage_collection w', 'w.ID = c.Solid_waste_ID', 'left');
         $this->db->where('d.Cycle_ID', $cycle->ID);
         $query = $this->db->get();
         return $query->first_row();
@@ -220,6 +220,7 @@ class Assessment_Model extends CI_Model
     public function assessment_information($ID)
     {
         $details = $this->assessment_details($ID);
+        // var_dump($details);
         $amt = 0; // 12272018 update declared default variable
         if ($details == null) {
             return null;
@@ -230,14 +231,19 @@ class Assessment_Model extends CI_Model
             $electrical = $this->getElectrical($ID);
             $other_taxes = $this->get_other_tax(null, null);
             $fixed_taxes = $this->get_fixed_tax(null);
+            
+            $categories = array_map(function($obj) {
+                return $obj->Category;
+            }, $other_taxes);
 
             $others = [];
-            if ($details->Waste_fee != 0) {
-                $others['Solid Waste Management Fee'] = $details->Waste_fee;
+
+            if ($details->Waste_Fee != 0) {
+                $others['Solid Waste Management Fee'] = $details->Waste_Fee;
             }
-            if ($details->Sanitary_fee != 0) {
-                $others['Sanitary Fee'] = $details->Sanitary_fee;
-            }
+            // if ($details->Sanitary_fee != 0) {
+            //     $others['Sanitary Fee'] = $details->Sanitary_fee;
+            // }
             if ($electrical->Rate != 0) {
                 $others['Building Inspection Fee - Local Share 80%'] = (float)$electrical->Rate * 0.8;
                 $others['Building Inspection Fee - Nat\'l Share 5%'] = (float)$electrical->Rate * 0.05;
@@ -300,16 +306,21 @@ class Assessment_Model extends CI_Model
                 
                 $others['Sticker'] = 20;
                 foreach ($lines as $key => $line) { //loops all business line
-                    echo $line->Business_category;
+                    // echo $line->Business_category;
                     if ($line->Essential != null || $line->NonEssential != null) { //checker if gross is declared or set
+                        
                         $Gross = ($line->Essential == null) ? $line->NonEssential : $line->Essential; //sets the gross variable
                         // $amt = tax
                         if ($line->Exempted) {
                             $amt = 0;
-                        } elseif (in_array($line->Business_category, $other_taxes)) { //checks if the business category belongs to the amusement, printing, franchise, or financial/banks
-                            $tax_category = $this->get_other_tax(2, $line->Business_Category);
+                            // echo 'trgrd';
+                        } elseif (in_array($line->Business_category, $categories)) { //checks if the business category belongs to the amusement, printing, franchise, or financial/banks
+                            $tax_category = $this->get_other_tax(2, $line->Business_category);
+                            
+                            // echo 'trgrd';
                             $amt = ($tax_category->percent1 / 100) * ($tax_category->percent2 / 100) * $Gross;
-                        } elseif (in_array($line->Business_line, $fixed_taxes)) { //checks if the business belongs to the declared fix amount for tax
+                        } elseif (in_array($line->Business_line, $fixed_taxes)) {
+                            //checks if the business belongs to the declared fix amount for tax
                             $tax_category = $this->get_fixed_tax($line->Busines_line);
                             if (strpos(strtoupper($line->Business_line), 'REAL ESTATE (SUBDIVISION OPERATOR)') !== false) { //for real estates
                                 $amt = $tax_category->Fee * $profile->Business_Area;
@@ -341,7 +352,11 @@ class Assessment_Model extends CI_Model
                                     $this->db->where('Category', 'MANUFACTURER');
                                     $query2 = $this->db->get('tbl_tax_other')->first_row(); //get the variables for computation of excess and the tax
                                     $excess = $Gross - ($query->Gross_to + 1);
+                                    // var_dump($excess);
+                                    // echo 'excess part : '. (($query2->percent2 / 100) * ($query2->percent1 / 100) * $excess);
+                                    // echo ' tax add? :' . $query->Tax . '<br>';
                                     $amt = (($query2->percent2 / 100) * ($query2->percent1 / 100) * $excess) + ($query->Tax);
+                                    // echo ' total? :' . $amt . '<br>';
                                 }
                             } elseif (
                                 trim(strtoupper($line->Business_category)) == 'CONTRACTORS' ||
@@ -353,19 +368,21 @@ class Assessment_Model extends CI_Model
                             ) {
                                 $this->db->where('Gross_from <=', $Gross);
                                 $this->db->where('Gross_to >=', $Gross);
-                                $query = $this->db->get('tbl_tax_manufacturer')->first_row();
+                                $query = $this->db->get('tbl_tax_service')->first_row();
                                 if ($query) {
                                     $amt = $query->Tax;
                                 } else {
                                     $this->db->order_by('Gross_to', 'desc');
-                                    $query = $this->db->get('tbl_tax_manufacturer')->first_row();
-                                    $this->db->where('Category', 'MANUFACTURER');
+                                    $query = $this->db->get('tbl_tax_service')->first_row();
+                                    $this->db->where('Category', 'CONTRACTOR');
                                     $query2 = $this->db->get('tbl_tax_other')->first_row();
                                     $excess = $Gross - ((int)$query->Gross_to + 1);
+                                    
                                     $amt = (($query2->percent2 / 100) * ($query2->percent1 / 100) * $excess) + ($query->Tax);
                                 }
                             } elseif (
                                 trim(strtoupper($line->Business_category)) == 'WHOLESALER' ||
+                                trim(strtoupper($line->Business_category)) == 'PRODUCER' ||
                                 trim(strtoupper($line->Business_category)) == 'DISTRIBUTORS' ||
                                 trim(strtoupper($line->Business_category)) == 'SUPPLIER' ||
                                 trim(strtoupper($line->Business_category)) == 'DEALER'
@@ -399,7 +416,9 @@ class Assessment_Model extends CI_Model
                         //FINAL CALCULATION. Checks if gross is essential or notFF
                         $mp = $line->Fee;
                         $rate = ($line->Essential == null) ? $amt : $amt / 2;
+                        // echo  $rate . '<br>';
                         $rt_mp = $rate * 0.2;
+                        // echo  $rt_mp . '<br>';
                         if ($rate != 0) {
                             $tax[$line->Business_line] = $rate;
                         }
@@ -804,10 +823,11 @@ class Assessment_Model extends CI_Model
             // var_dump($query);
             return $query->first_row();
         } else {
-            $this->db->where('Category', 'AMUSEMENT');
-            $this->db->where('Category', 'FRANCHISE');
-            $this->db->where('Category', 'PRINTING AND PUBLICATION');
-            $this->db->where('Category', 'FINANCIAL');
+            $this->db->where('Category !=', 'INITIAL TAX');
+            $this->db->where('Category !=', 'MANUFACTURER');
+            $this->db->where('Category !=', 'DEALER');
+            $this->db->where('Category !=', 'CONTRACTOR');
+            $this->db->where('Category !=', 'FINANCIAL');
             $query = $this->db->get('tbl_tax_other');
             return $query->result();
         }
@@ -1007,7 +1027,7 @@ class Assessment_Model extends CI_Model
             'd.*,' .
                 's.Category,' .
                 's.Sanitary_fee,' .
-                'w.Size,' .
+                // 'w.Size,' .
                 'w.Waste_fee'
         );
         $this->db->from('tbl_assessment_details d');

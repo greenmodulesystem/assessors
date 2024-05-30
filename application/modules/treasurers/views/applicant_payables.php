@@ -51,6 +51,7 @@ if($details == null){ ?>
                         } ?>
                     </td>
                     <td class="text-right" style="border-right:2px solid gray;">
+                    <!-- <?=$info;?> -->
                         <div class="<?=($collection > 0 || $key == 'Business Tax' || $info == 0) ? '' : 'fees_text' ;?>">
                             <?=($info == 0) ? 'EXEMPTED' : number_format($info,2)?>
                         </div>
@@ -72,10 +73,12 @@ if($details == null){ ?>
                                 $Interest[$key1]  += $bill['Interest'];
                             }
                         }
+                        
                         ?>
                             <td class="text-right edit_fees" data-id="Balance" name="<?=$key1?>"
                                 data-target="" data-toggle="modal" data-keyboard="false" 
                                 data-backdrop="static">
+                                <!-- <?=$Balance[$key1];?> -->
                                 <div>
                                     <?php echo number_format($Balance[$key1],2);
                                         $bal_total += $Balance[$key1];?>

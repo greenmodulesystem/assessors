@@ -31,7 +31,8 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                 <div class="box box-default">
                     <div class="box-body box-profile">
                         <h3 class="profile-username text-center"><?= strtoupper($Tradename) ?></h3>
-                        <p class="text-muted text-center"><?= $profiles->Status . " (" . $profiles->Cycle_date . ")" ?></p>
+                        <p class="text-muted text-center"><?= $profiles->Status . " (" . $profiles->Cycle_date . ")" ?>
+                        </p>
                         <div class="list-group list-group-unbordered text-center">
                             <div class="list-group-item col-md-3 col-sm-12 col-xs-12">
                                 <strong><i class="fa fa-user margin-r-5"></i>Proprietor</strong>
@@ -83,7 +84,8 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                             <table class="table table-condensed text-center" cellspacing="0" width="100%">
                                 <tbody>
                                     <tr>
-                                        <td class="warning"> No bill from the City Engineer's Office yet. Please process your City Engineer's bill for your current application first.</td>
+                                        <td class="warning"> No bill from the City Engineer's Office yet. Please process
+                                            your City Engineer's bill for your current application first.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -99,7 +101,8 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                             <table class="table table-condensed text-center" cellspacing="0" width="100%">
                                 <tbody>
                                     <tr>
-                                        <td class="warning"> Not yet verified by BPLO. To be assessed in <?= $profiles->Cycle_date ?>.</td>
+                                        <td class="warning"> Not yet verified by BPLO. To be assessed in
+                                            <?= $profiles->Cycle_date ?>.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -250,7 +253,7 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                 <?php } else { ?>
                                                     <select id="mp_fee<?= $key ?>" class="input-field form-control input-sm" disabled>
                                                         <option selected hidden value="<?= @$bline->mp_ID ?>">
-                                                        <?= @$bline->Business_line ?>
+                                                            <?= @$bline->Business_line ?>
                                                         </option>
                                                         <option disabled value="">Select business type</option>
                                                     <?php } ?>
@@ -282,20 +285,20 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Business Size:</label>
+                                        <label>Waste Fee:</label>
                                         <label for="Solid_waste_ID" hidden>
                                             <i class="fa fa-times-circle-o"></i> Required
                                         </label>
-                                        <?php if ($profiles->Cenro == null) { ?>
+                                        <!-- <?php if ($profiles->Cenro == null) { ?>
                                             <select id="Solid_waste_ID" class="input-field form-control input-sm">
                                                 <option disabled selected value="">Select business size</option>
                                             <?php } else { ?>
                                                 <?php $bus_size = '';
-                                                foreach ($solid_fees as $solid) {
-                                                    if ($solid->ID == $profiles->Cenro) {
-                                                        $bus_size =  $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')';
+                                                    foreach ($solid_fees as $solid) {
+                                                        if ($solid->ID == $profiles->Cenro) {
+                                                            $bus_size =  $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')';
+                                                        }
                                                     }
-                                                }
                                                 ?>
                                                 <select id="Solid_waste_ID" class="input-field form-control input-sm" disabled>
                                                     <option selected hidden value="<?= $profiles->Cenro ?>">
@@ -304,7 +307,23 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                     <option disabled value="">Select business type</option>
                                                 <?php } ?>
                                                 <?php foreach ($solid_fees as $key => $solid) { ?>
-                                                    <option value="<?= $solid->ID ?>"><?= $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')' ?></option>
+                                                    <option value="<?= $solid->Waste_Fee ?>"><?= $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')' ?></option>
+                                                <?php } ?>
+                                                </select>
+                                                <h6><i>(Solid Waste Fee)</i></h6> -->
+                                        <?php if ($No_record) {
+                                        ?>
+                                            <select id="Solid_waste_ID" class="input-field form-control input-sm">
+                                                <option disabled selected value="">Select Fee</option>
+                                            <?php } else { ?>
+                                                <select id="Solid_waste_ID" class="input-field form-control input-sm" disabled>
+                                                    <option selected hidden value="<?= $details->Waste_Fee ?>">
+                                                        <?= $details->Waste_Fee ?>
+                                                    </option>
+                                                    <option disabled value="">Select Fee</option>
+                                                <?php } ?>
+                                                <?php foreach ($solid_fees as $key => $solid) { ?>
+                                                    <option value="<?= $solid->Waste_Fee ?>"><?= $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')' ?></option>
                                                 <?php } ?>
                                                 </select>
                                                 <h6><i>(Solid Waste Fee)</i></h6>
@@ -393,10 +412,14 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                             <?php } else { ?>
                                                 <input id="Delivery" type="checkbox" class="form-check-input" disabled <?= (@$details->Delivery_Permit != 0) ? 'checked' : '' ?>>&emsp;
                                                 <select id="Delivery_Permit" class="input-field form-control input-sm" disabled>
-                                                    <option disabled value="" <?= @$details->Delivery_Permit == 0 ? 'selected' : '' ?>>Select fee for Delivery Permit</option>
-                                                    <option value="550" <?= @$details->Delivery_Permit == 550 ? 'selected' : '' ?>>Small - 4 wheeler</option>
-                                                    <option value="650" <?= @$details->Delivery_Permit == 650 ? 'selected' : '' ?>>Medium - 6 wheeler</option>
-                                                    <option value="750" <?= @$details->Delivery_Permit == 750 ? 'selected' : '' ?>>Large - 10 wheeler</option>
+                                                    <option disabled value="" <?= @$details->Delivery_Permit == 0 ? 'selected' : '' ?>>Select fee for
+                                                        Delivery Permit</option>
+                                                    <option value="550" <?= @$details->Delivery_Permit == 550 ? 'selected' : '' ?>>Small - 4
+                                                        wheeler</option>
+                                                    <option value="650" <?= @$details->Delivery_Permit == 650 ? 'selected' : '' ?>>Medium - 6
+                                                        wheeler</option>
+                                                    <option value="750" <?= @$details->Delivery_Permit == 750 ? 'selected' : '' ?>>Large - 10
+                                                        wheeler</option>
                                                 </select>
                                             <?php } ?>
                                         </div>
@@ -446,13 +469,15 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                                                                     'disabled' : ''; ?>>
                                             <i class="fa fa-edit"></i><span>&ensp;Edit</span>
                                         </button>&emsp;
-                                        <b>Note: <font color='red'>To exempt a Business Line, please check the box beside it.</font></b>
+                                        <b>Note: <font color='red'>To exempt a Business Line, please check the box beside
+                                                it.</font></b>
                                         <div class="pull-right">
                                             <button id="Edit_gross" class="btn btn-sm flat btn-danger" style="display:<?= $saved ? 'inline' : 'none'; ?>" <?= $collection == 0 ? '' : 'disabled' ?> data-target="#Authenticate_modal" data-toggle="modal" data-keyboard="false" data-backdrop="static">
                                                 <i class="fa fa-edit"></i><span>&ensp;Reassess</span> <!-- 08-18-2020 -->
                                             </button>
                                             <button id="Save_gross" class="btn btn-sm flat btn-primary" style="display:none">
-                                                <i class="fa fa-save"></i><span>&ensp;Save Reassessment</span> <!-- 08-18-2020 -->
+                                                <i class="fa fa-save"></i><span>&ensp;Save Reassessment</span>
+                                                <!-- 08-18-2020 -->
                                             </button>
                                         </div>
                                     </div>
@@ -568,7 +593,8 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
 
 <?php main_footer(); ?>
 
-<script language="javascript" src="<?php echo base_url() ?>assets/cto_assets/js/handlers/assessment_details_handler.js"></script>
+<script language="javascript" src="<?php echo base_url() ?>assets/cto_assets/js/handlers/assessment_details_handler.js">
+</script>
 <script language="javascript" src="<?php echo base_url() ?>assets/scripts/noPostBack.js"></script>
 <script language="javascript">
     var baseUrl = '<?php echo base_url() ?>';

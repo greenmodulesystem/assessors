@@ -77,6 +77,7 @@ class Treasurers extends CI_Controller {
         $info = $this->data['information'] = $this->MAssessment->assessment_information($ID);
 
         if ($info != null){
+            // echo '3GRD';
             $this->data['bill_info'] = $this->MBilling->billing_information($info,$ID,$Payment_mode);
             $this->data['bill_fees'] = $this->MBilling->billing_fees($a_ID);
         } else {
@@ -380,12 +381,14 @@ class Treasurers extends CI_Controller {
         $Date = date('Y-m-d H:i:s'); //TEMP
 
         $data = array(
-            // "Category_ID" => $_POST['Category_ID'],
+            "Category_ID" => $_POST['Solid_waste_ID'],
+            // "Trucking" => $_POST['Truck'],
             "DSAFee" => $_POST['DSAFee'],
             "Flammable" => $_POST['Flammable'],
             "Delivery_Permit" => $_POST['Delivery'],
             "Trucking" => $_POST['Truck'],
             "Beach_Operator" => $_POST['Beach'],
+            "Waste_Fee" => $_POST['Solid_waste_ID'],
         );
 
         $array = array(

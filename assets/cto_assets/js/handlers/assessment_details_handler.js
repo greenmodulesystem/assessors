@@ -70,7 +70,8 @@ $(document).ready(function() {
         $('.input-field').removeAttr('disabled');
         $('#Flame').removeAttr('disabled');
         $('#DSA').removeAttr('disabled');
-        $('#Delivery').removeAttr('disabled');
+        $('#Delivery_Permit').prop('disabled', true);
+        $('#Deliver').removeAttr('disabled');
         $('#Trucking').removeAttr('disabled');
         $('#Beach').removeAttr('disabled');
         $('.exempt').removeAttr('disabled');

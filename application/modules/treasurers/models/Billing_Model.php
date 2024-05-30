@@ -59,8 +59,11 @@ class Billing_Model extends CI_Model {
         foreach($information as $key => $infos){
             if($key == 'Business Tax' && $infos != null) {
                 foreach($infos as $key2 => $info){
-                    $due = round($info,2);
+                    // $due = round($info,2);
+                    $due = $info;
+                    // var_dump($due);
                     $per_qtr = $due/$div;
+                    // echo $per_qtr;
                     for($x=0;$x < $div;$x++) {
 
                         // if($x+1 == 1) {
@@ -85,7 +88,8 @@ class Billing_Model extends CI_Model {
                             $date = $year.'-'.$due_detu[3]->Mm.'-'.$due_detu[3]->Dd;
                         }
                     // echo 'DUE: '.$due.'  -  QTR: '.$per_qtr.'</br>';
-                        $amount[$x] = round($per_qtr,2) > round($due,2) ? round($due,2) : round($per_qtr,2);
+                        // $amount[$x] = round($per_qtr,2) > round($due,2) ? round($due,2) : round($per_qtr,2);
+                        $amount[$x] = $per_qtr > $due ? $due : $per_qtr;
 
                         if(date('Y-m-d') > $date) {
                             // $bal[$x] = 0;
@@ -110,7 +114,8 @@ class Billing_Model extends CI_Model {
                             "Interest" => round($interest,2)
                             )
                         );
-                        $due -= round($per_qtr,2);
+                        // $due -= round($per_qtr,2);
+                        $due -= $per_qtr;
                     }
                 }
             }
