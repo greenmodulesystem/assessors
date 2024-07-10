@@ -231,15 +231,19 @@ class Assessment_Model extends CI_Model
             $electrical = $this->getElectrical($ID);
             $other_taxes = $this->get_other_tax(null, null);
             $fixed_taxes = $this->get_fixed_tax(null);
-            
-            $categories = array_map(function($obj) {
+            $found_similar = false;
+            $categories = array_map(function ($obj) {
                 return $obj->Category;
             }, $other_taxes);
+
+            $lessor_arr = [
+                'APARTEL', 'PENSION UNITS', 'APARTMENT', 'TOWNHOUSES', 'CONDOMINUMS', 'SPACE RENTAL', 'SPACES FOR RENT', 'ROOMS FOR RENT', 'ROOM RENTALS', 'HOUSE FOR LEASE'
+            ];
 
             $others = [];
 
             if ($details->Waste_Fee != 0) {
-                $others['Solid Waste Management Fee'] = $details->Waste_Fee;
+                $others['Waste Fee'] = $details->Waste_Fee;
             }
             // if ($details->Sanitary_fee != 0) {
             //     $others['Sanitary Fee'] = $details->Sanitary_fee;
@@ -252,8 +256,11 @@ class Assessment_Model extends CI_Model
             if ($details->Flammable != 0) {
                 $others['Flammable Storage Permit Fee'] = $details->Flammable;
             }
+            if ($details->BrgyFee != 0) {
+                $others['Barangay Clearance Fee'] = $details->BrgyFee;
+            }
             if ($details->DSAFee != 0) {
-                $others['Designated Smoking Area Fee '] = $details->DSAFee;
+                $others['No Smoking Sticker'] = $details->DSAFee;
             }
             if ($details->Trucking != 0) {
                 $dt = $details->Trucking;
@@ -285,7 +292,19 @@ class Assessment_Model extends CI_Model
 
             if ($profile->Status == 'NEW') {
                 foreach ($lines as $key => $line) { //get all business lines then add mayor's permit fee
-                    if (strpos($line->Business_line, 'Storage of Flammable Substance') !== false) { //01-07-2020
+                    foreach ($lessor_arr as $item) {
+                        // Convert the item to lowercase for case-insensitive comparison
+                        $item_lower = strtolower($item);
+
+                        // Check if the lowercase version of $string_to_check contains $item_lower
+                        if (strpos(strtolower($line->Business_line), $item_lower) !== false) {
+                            $found_similar = true;
+                            break; // Exit the loop once a match is found
+                        }
+                    }
+                    if ($found_similar) {
+                        $regulatory[$line->Business_line . ' - Mayor\'s Permit'] = 550;
+                    } else if (strpos($line->Business_line, 'Storage of Flammable Substance') !== false) { //01-07-2020
                     } else if (strpos($line->Business_line, 'Computer') !== false || strpos($line->Business_line, 'Internet') !== false) {
                         $regulatory[$line->Business_line . ' - Mayor\'s Permit'] = $line->NoOfUnits * 150;
                     } else if (strpos($line->Business_line, 'Cigarette Retailer') !== false) {
@@ -297,26 +316,38 @@ class Assessment_Model extends CI_Model
                     }
                 } //if application is new, initial tax is added based on declared capital
                 $tax = null;
-                $initial = $this->get_other_tax(1, "INITIAL TAX");
+                // $initial = $this->get_other_tax(1, "INITIAL TAX");
                 $others['Business Plate'] = 150;
                 // var_dump($initial);
-                $regulatory['Business License'] = $initial->percent1 * $initial->percent2 * $profile->Capitalization;
+                // $regulatory['Business License'] = $initial->percent1 * $initial->percent2 * $profile->Capitalization;
             } else { //if application is renewal. tax is added
                 $tax = []; //initializes tax array
-                
+
                 $others['Sticker'] = 20;
                 foreach ($lines as $key => $line) { //loops all business line
+                    foreach ($lessor_arr as $item) {
+                        // Convert the item to lowercase for case-insensitive comparison
+                        $item_lower = strtolower($item);
+
+                        // Check if the lowercase version of $string_to_check contains $item_lower
+                        if (strpos(strtolower($line->Business_line), $item_lower) !== false) {
+                            $found_similar = true;
+                            break; // Exit the loop once a match is found
+                        }
+                    }
                     // echo $line->Business_category;
                     if ($line->Essential != null || $line->NonEssential != null) { //checker if gross is declared or set
-                        
+
                         $Gross = ($line->Essential == null) ? $line->NonEssential : $line->Essential; //sets the gross variable
                         // $amt = tax
                         if ($line->Exempted) {
                             $amt = 0;
                             // echo 'trgrd';
+                        } elseif ($found_similar) {
+                            $amt = 0.015 * $Gross;
                         } elseif (in_array($line->Business_category, $categories)) { //checks if the business category belongs to the amusement, printing, franchise, or financial/banks
                             $tax_category = $this->get_other_tax(2, $line->Business_category);
-                            
+
                             // echo 'trgrd';
                             $amt = ($tax_category->percent1 / 100) * ($tax_category->percent2 / 100) * $Gross;
                         } elseif (in_array($line->Business_line, $fixed_taxes)) {
@@ -377,7 +408,7 @@ class Assessment_Model extends CI_Model
                                     $this->db->where('Category', 'CONTRACTOR');
                                     $query2 = $this->db->get('tbl_tax_other')->first_row();
                                     $excess = $Gross - ((int)$query->Gross_to + 1);
-                                    
+
                                     $amt = (($query2->percent2 / 100) * ($query2->percent1 / 100) * $excess) + ($query->Tax);
                                 }
                             } elseif (
@@ -406,7 +437,8 @@ class Assessment_Model extends CI_Model
                                 $query = $this->db->get('tbl_tax_retailer')->first_row(); //yes it has a separate table why not
 
                                 if ($query->gross_less >= $Gross) {
-                                    $amt = ($query->tax / 100) * $query->gross_less;
+                                    // echo ($query->tax / 100).' '.$Gross;
+                                    $amt = ($query->tax / 100) * $Gross;
                                 } else {
                                     $amt = (($query->tax / 100) * $query->gross_less) + (($query->tax_excess / 100) * ($Gross - $query->gross_more));
                                 }
@@ -807,7 +839,7 @@ class Assessment_Model extends CI_Model
                     'Regulatory Fee' => $regulatory,
                     'Other Charge' => $others
                 )
-            );
+            );  
             return $data;
         }
     }
@@ -891,13 +923,17 @@ class Assessment_Model extends CI_Model
                 $this->db->where('ID', $r->Assessment_asset_ID);
                 $asset = $this->db->get('tbl_assessment_asset')->first_row();
 
-                $this->db->where('Category', $r->Business_category);
-                $this->db->where('Characteristics', $asset->Characteristics);
-                $mayors = $this->db->get('tbl_fees_mayors_permit')->first_row();
+                // $this->db->where('Category', $r->Business_category);
+                // $this->db->where('Characteristics', $asset->Characteristics);
+                // $mayors = $this->db->get('tbl_fees_mayors_permit_v2')->first_row();
 
-                $r->Asset_size = $asset->Asset_size;
-                $r->Characteristics = $asset->Characteristics;
-                $r->Fee = @$mayors->Fee;
+                $this->db->where('ID', $r->mp_ID);
+                // $this->db->where('Characteristics', $asset->Characteristics);
+                $mayors = $this->db->get('tbl_fees_mayor_permit_v2')->first_row();
+                // var_dump($r->mp_ID);
+                // $r->Asset_size = $asset->Asset_size;
+                // $r->Characteristics = $asset->Characteristics;
+                $r->Fee = @$mayors->Rate;
             }
         }
 

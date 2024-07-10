@@ -382,7 +382,7 @@ class Treasurers extends CI_Controller {
 
         $data = array(
             "Category_ID" => $_POST['Solid_waste_ID'],
-            // "Trucking" => $_POST['Truck'],
+            "BrgyFee" => $_POST['BrgyFee'],
             "DSAFee" => $_POST['DSAFee'],
             "Flammable" => $_POST['Flammable'],
             "Delivery_Permit" => $_POST['Delivery'],

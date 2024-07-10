@@ -469,12 +469,13 @@ class Users_model extends CI_Model
 			$this->db->where('tbl_modules.Module_name',$module);
 			$qry_modules = $this->db->get();
 
-			$get_modules = $qry_modules->first_row();
+			// $get_modules = $qry_modules->first_row();
 
-			if($get_modules == null){
-				throw new Exception(MODULE_NOT_FOUND);
-			}
-			//
+			// if($get_modules == null){
+			// 	throw new Exception(MODULE_NOT_FOUND);
+			// }
+			// disabled by karl 07/09/24 to allow assessor to go offline
+
 			// assign value on session variable
 			$user = new \stdClass;
 			$user->access_id = $get_user->ID;

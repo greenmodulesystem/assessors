@@ -9,7 +9,7 @@ $Bldg = ($profiles->Building_name != '') ? trim($profiles->Building_name) . ", "
 $Strt = ($profiles->Street != '') ? trim($profiles->Street) . ", " : '';
 $Prk = ($profiles->Purok != '') ? trim($profiles->Purok) . ", " : '';
 $Address1 = ucwords($Bldg) . ucwords($Strt) . ucwords($Prk);
-$Address2 = ucwords(trim($profiles->Barangay)) . ", SAGAY City";
+$Address2 = ucwords(trim($profiles->Barangay)) . ", SAGAY CITY";
 $Payor = ucwords($profiles->Tax_payer);
 $Number = $profiles->Mob_num != '' ? $profiles->Mob_num : $profiles->Tel_num;
 $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->Tradename;
@@ -236,35 +236,40 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                 <div class="col-md-2">
                                     <div class="form-group">
                                         <label>Mayor's Permit Fee:</label>
-                                        <?php foreach ($blines as $key => $bline) { ?>
-                                            <?php if (@$bline->mp_ID == null) { ?>
-                                                <select id="mp<?= $key ?>" class="input-field form-control input-sm">
-                                                    <option disabled selected value="">Select Fee</option>
+                                        <?php foreach ($blines as $key => $bline) {
+
+                                        ?>
+                                            <?php if (@$bline->mp_ID == null) {
+                                            ?>
+                                                <select id="mp<?= $key ?>" class="<?=@$profiles->Status=='NEW' ? 'input-field' : ''?> form-control input-sm">
+                                                    <option disabled selected value="" data-id="test1">Select Fee</option>
                                                     <?php foreach ($asset_size as $key => $asset) {
                                                         if (@$asset->Description == $bline->Business_line) {
                                                     ?>
-                                                            <option value="<?= @$asset->ID ?>">
+                                                            <option value="<?= @$asset->ID ?>" data-id="test3">
                                                                 <?= @$asset->Characteristics . "(" . @$asset->Rate . ")" ?>
                                                                 <?= @$asset->Description ?>
                                                             </option>
                                                     <?php
                                                         }
                                                     } ?>
-                                                <?php } else { ?>
-                                                    <select id="mp_fee<?= $key ?>" class="input-field form-control input-sm" disabled>
-                                                        <option selected hidden value="<?= @$bline->mp_ID ?>">
+                                                <?php } else {
+
+                                                ?>
+                                                    <select id="mp_fee<?= $key ?>" class="<?=@$profiles->Status=='NEW' ? 'input-field' : ''?> form-control input-sm" disabled>
+                                                        <option selected hidden value="<?= @$bline->mp_ID ?> " data-id="test2">
                                                             <?= @$bline->Business_line ?>
                                                         </option>
-                                                        <option disabled value="">Select business type</option>
-                                                    <?php } ?>
-                                                    <?php foreach ($asset_size as $key => $asset) {
-                                                        if (@$asset->Description == $bline->Business_line) {
-                                                    ?>
-                                                            <option value="<?= @$asset->ID ?>">
-                                                                <?= @$asset->Characteristics . "(" . @$asset->Rate . ")" ?>
-                                                                <?= @$asset->Description ?>
-                                                            </option>
+                                                        <option disabled value="" data-id="test4">Select business type</option>
+                                                        <?php foreach ($asset_size as $key => $asset) {
+                                                            if (@$asset->Description == $bline->Business_line) {
+                                                        ?>
+                                                                <option value="<?= @$asset->ID ?>" data-id="test6">
+                                                                    <?= @$asset->Characteristics . "(" . @$asset->Rate . ")" ?>
+                                                                    <?= @$asset->Description ?>
+                                                                </option>
                                                     <?php
+                                                            }
                                                         }
                                                     } ?>
                                                     </select></br>
@@ -273,7 +278,7 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
                                         <label>No. of Employees :</label>
                                         <label for="Employees" hidden>
@@ -283,9 +288,9 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                         <h6><i>(Health Fee)</i></h6>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Waste Fee:</label>
+                                        <label>Garbage Fee:</label>
                                         <label for="Solid_waste_ID" hidden>
                                             <i class="fa fa-times-circle-o"></i> Required
                                         </label>
@@ -323,35 +328,28 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                                     <option disabled value="">Select Fee</option>
                                                 <?php } ?>
                                                 <?php foreach ($solid_fees as $key => $solid) { ?>
-                                                    <option value="<?= $solid->Waste_Fee ?>"><?= $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')' ?></option>
+                                                    <option value="<?= $solid->Waste_Fee ?>">
+                                                        <?= $solid->Business_type . ' (Fee: P' . $solid->Waste_Fee . ')' ?>
+                                                    </option>
                                                 <?php } ?>
                                                 </select>
-                                                <h6><i>(Solid Waste Fee)</i></h6>
+                                                <h6><i>(Garbage Fee)</i></h6>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label>Business Type:</label>
-                                        <label for="Category_ID" hidden>
-                                            <i class="fa fa-times-circle-o"></i> Required
-                                        </label>
-                                        <?php if ($No_record) { ?>
-                                            <select id="Category_ID" class="input-field form-control input-sm">
-                                                <option disabled selected value="">Select business type</option>
+                                        <label>No Smoking Sticker:</label></br>
+                                        <div class="form-inline">
+                                            <?php if ($No_record) { ?>
+                                                <input id="DSA" type="checkbox" class="form-check-input">&emsp;
+                                                <input id="DSAFee" type="number" min="1" disabled class="form-control input-sm text-right" value="" style="width:70%">
                                             <?php } else { ?>
-                                                <select id="Category_ID" class="input-field form-control input-sm" disabled>
-                                                    <option selected hidden value="<?= $details->Category_ID ?>">
-                                                        <?= $details->Category ?>
-                                                    </option>
-                                                    <option disabled value="">Select business type</option>
-                                                <?php } ?>
-                                                <?php foreach ($sanitary_fees as $key => $sanitary) { ?>
-                                                    <option value="<?= $sanitary->ID ?>"><?= $sanitary->Category ?></option>
-                                                <?php } ?>
-                                                </select>
-                                                <h6><i>(Sanitary Fee)</i></h6>
+                                                <input id="DSA" type="checkbox" class="form-check-input" disabled <?= ($details->DSAFee != 0) ? 'checked' : '' ?>>&emsp;
+                                                <input id="DSAFee" type="number" min="1" disabled class="form-control input-sm text-right" value="<?= $details->DSAFee ?>" style="width:70%">
+                                            <?php } ?>
+                                        </div>
                                     </div>
-                                </div> -->
+                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Flammable Storage :</label></br>
@@ -385,14 +383,14 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label>Designated Smoking Area:</label></br>
+                                        <label>Barangay Fee:</label></br>
                                         <div class="form-inline">
                                             <?php if ($No_record) { ?>
-                                                <input id="DSA" type="checkbox" class="form-check-input">&emsp;
-                                                <input id="DSAFee" type="number" min="1" disabled class="form-control input-sm text-right" value="" style="width:70%">
+                                                <input id="BrgyF" type="checkbox" class="form-check-input input-field">&emsp;
+                                                <input id="Brgy_fee" type="number" min="1" disabled class="form-control input-sm text-right" value="" style="width:70%">
                                             <?php } else { ?>
-                                                <input id="DSA" type="checkbox" class="form-check-input" disabled <?= ($details->DSAFee != 0) ? 'checked' : '' ?>>&emsp;
-                                                <input id="DSAFee" type="number" min="1" disabled class="form-control input-sm text-right" value="<?= $details->DSAFee ?>" style="width:70%">
+                                                <input id="BrgyF" type="checkbox" class="form-check-input input-field" disabled <?= ($details->BrgyFee != 0) ? 'checked' : '' ?>>&emsp;
+                                                <input id="Brgy_fee" type="number" min="1" disabled class="form-control input-sm text-right" value="<?= $details->BrgyFee ?>" style="width:70%">
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -402,21 +400,22 @@ $Tradename = $profiles->Tradename == '' ? $profiles->Business_name : $profiles->
                                         <label>Delivery Permit Fee:</label></br>
                                         <div class="form-inline">
                                             <?php if ($No_record) { ?>
-                                                <input id="Delivery" type="checkbox" class="form-check-input">&emsp;
-                                                <select id="Delivery_Permit" class="input-field form-control input-sm" disabled>
+                                                <input id="Delivery" type="checkbox" class="form-check-input input-field">&emsp;
+                                                <select id="Delivery_Permit" class="form-control input-sm" disabled>
                                                     <option disabled selected value="">Select fee for Delivery Permit</option>
                                                     <option value="550">Small - 4 wheeler</option>
                                                     <option value="650">Medium - 6 wheeler</option>
                                                     <option value="750">Large - 10 wheeler</option>
                                                 </select>
                                             <?php } else { ?>
-                                                <input id="Delivery" type="checkbox" class="form-check-input" disabled <?= (@$details->Delivery_Permit != 0) ? 'checked' : '' ?>>&emsp;
-                                                <select id="Delivery_Permit" class="input-field form-control input-sm" disabled>
+                                                <input id="Delivery" type="checkbox" class="form-check-input input-field" disabled <?= (@$details->Delivery_Permit != 0) ? 'checked' : '' ?>>&emsp;
+                                                <select id="Delivery_Permit" class="form-control input-sm" disabled>
                                                     <option disabled value="" <?= @$details->Delivery_Permit == 0 ? 'selected' : '' ?>>Select fee for
                                                         Delivery Permit</option>
                                                     <option value="550" <?= @$details->Delivery_Permit == 550 ? 'selected' : '' ?>>Small - 4
                                                         wheeler</option>
-                                                    <option value="650" <?= @$details->Delivery_Permit == 650 ? 'selected' : '' ?>>Medium - 6
+                         
+                                                        <option value="650" <?= @$details->Delivery_Permit == 650 ? 'selected' : '' ?>>Medium - 6
                                                         wheeler</option>
                                                     <option value="750" <?= @$details->Delivery_Permit == 750 ? 'selected' : '' ?>>Large - 10
                                                         wheeler</option>

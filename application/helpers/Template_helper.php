@@ -249,7 +249,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title><?php echo $ci->config->item('system_tab_name') ?> - Log in</title>
-        <link rel="icon" href="<?php echo base_url() ?>assets/img/Logo_3.png">
+        <link rel="icon" href="<?php echo base_url() ?>assets/img/Sagay_Logo.png">
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.7 -->

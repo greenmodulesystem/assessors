@@ -54,7 +54,7 @@ class Fees_Model extends CI_Model
 
     public function solid_fees()
     {
-        $this->db->order_by('ID', 'asc');
+        $this->db->order_by('Waste_Fee', 'asc');
         $query = $this->db->get('tbl_fees_garbage_collection');
         return $query->result();
     }

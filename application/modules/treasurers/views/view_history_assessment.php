@@ -259,8 +259,8 @@
         <p>Reviewed By:</p>
         <p>&emsp;</p>
         <!-- <p><input style="width:305px;" class="sm permit-info text-center" value="<?=strtoupper($assessment->Action_by)?>"></p> -->
-        <p class="text-center" style="width:305px;border-bottom:1px solid black">MARITES D. ROSANO</p>
-        <p class="text-center" style="line-height:0em"><i>LRCO III</i></p>
+        <p class="text-center" style="width:305px;border-bottom:1px solid black">ARNOLD V. ARAQUIL</p>
+        <p class="text-center" style="line-height:0em"><i>LTOO III</i></p>
     </div>
     <div style="clear:both;line-height:1em;">&emsp;</div>
     <div>
